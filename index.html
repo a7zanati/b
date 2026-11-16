@@ -205,9 +205,9 @@ input[dir=ltr]{text-align:left}
     <p>مساعدك الذكي مدرب على بيانات من الواقع للحصول على اجابة صحيحة.</p>
     <div class="chips">
       <button class="chip" type="button">ايه هو الذكاء الإصطناعى ؟</button>
-      <button class="chip" type="button">امتى ظهر مصطلح الذكاء الاصطناعي؟</button>
+      <button class="chip" type="button">ما الفرق بين علوم الحاسب وعلوم الذكاء الإصطناعى؟</button>
       <button class="chip" type="button">ايه الفرق بين التمثيل الضوئي والتنفس الخلوي؟</button>
-      <button class="chip t" type="button">ايه عاصمة فرنسا؟</button>
+      <button class="chip t" type="button">كيف يتم عمل الشرائح الالكترونية؟</button>
     </div>
     <div class="trust"><span>اجابة صحيحة و من المحتوي المسجل لدي</span><span>بدون معلومات غير موثقة</span><span>بالعامية والفصحى</span></div>
   </section>
@@ -218,7 +218,7 @@ input[dir=ltr]{text-align:left}
     <textarea id="q" rows="1" placeholder="اكتب سؤالك هنا..." aria-label="سؤالك" required></textarea>
     <button class="send" id="b" type="submit" aria-label="إرسال"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></button>
   </form>
-  <p class="foot">تطوير أحمد محمد.</p>
+  <p class="foot"> dev.ahmed mohamed </p>
 </div>
 
 <script>
@@ -237,11 +237,11 @@ const ROBOT=`<div class="robot"><div class="thought"><i></i><i></i><i></i></div>
 /* ============================================================
    ✏️ الإعدادات — اكتب هنا فقط
    ============================================================ */
-const MAINTENANCE=true; // true = وضع الصيانة (البوت نايم) — غيّرها إلى false أو امسح الملف ده ورجّع الأصلي
+const MAINTENANCE=true; 
 const CONFIG={
-  WEBHOOK_URL:'',   // رابط الـ Webhook (Production URL)
-  API_KEY:'',       // كلمة سر الـ Header (X-API-Key)
-  STUDENT_ID:'test-1' // رقم الطالب التجريبي
+  WEBHOOK_URL:'',   
+  API_KEY:'',     
+  STUDENT_ID:'test-1' // 
 };
 /* ============================================================ */
 const $=id=>document.getElementById(id),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
