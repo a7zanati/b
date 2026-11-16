@@ -254,11 +254,11 @@ const st=(el,c)=>{if(MAINTENANCE)return;['thinking','typing','happy','oops'].for
 const look=(el,x,y)=>{el.style.setProperty('--lx',x);el.style.setProperty('--ly',y)};
 const hop=el=>{el.classList.remove('tick');void el.offsetWidth;el.classList.add('tick')};
 const heroEl=mk('big');$('slot').appendChild(heroEl);
-const TIRED=['البوت حاليًا في حالة خمول 😴 هههههههههه حاول لاحقًا.','آه… أنا تعبان أوي النهارده 🥱 سيبني أرتاح شوية وارجع لي بعدين.','زززززز… 💤 صاحي بالعافية، حاول لاحقًا يا صاحبي.','البوت نايم دلوقتي 😪 هههههه جرّب تاني بعد شوية.'];let tiredI=0;
+const TIRED=['حاول لاحقاً'];let tiredI=0;
 if(MAINTENANCE){heroEl.classList.add('tired');
  const hb=document.querySelector('#welcome');hb.querySelector('.badge').textContent='✦ في إجازة مؤقتة';
- hb.querySelector('h1').textContent='البوت حاليًا في حالة خمول 😴';
- hb.querySelector('p').textContent='نبيغ مرهق وتعبان شوية… هههههههه حاول لاحقًا.';
+ hb.querySelector('h1').textContent='البوت فى مرحلة صيانة 😴';
+ hb.querySelector('p').textContent='قد يكون السبب بسبب تزاحم عدد الطلبات';
  const tr=hb.querySelector('.trust');if(tr)tr.remove();
  setTimeout(()=>setPill('bad','في حالة خمول'),0);}
 
