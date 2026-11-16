@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#0e4750">
+<title>نابغ | المساعد الذكي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--brand:#0e4750;--brand-dark:#09272b;--brand-soft:#e5f0f2;--on-brand:#fff;--secondary:#135862;--accent:#f2af2d;
+ --bg:#f3f7f8;--surface:#fff;--header-bg:#fff;--fg:#061719;--muted:#455c5f;--line:#d4e1e3;--input-bg:#fff;
+ --ok:#047857;--bad:#dc2626;--btn-bg:#f2af2d;--btn-fg:#061719;--btn-hover:#f5bf55;--btn-border:#d9971c;
+ --radius:16px;--btn-radius:12px;--shadow:0 12px 32px rgb(0 0 0/.12);--user-bg:#0e4750;--user-fg:#fff}
+:root.dark{--brand:#f2af2d;--brand-dark:#f5bf55;--brand-soft:#103238;--on-brand:#061719;--bg:#061719;--surface:#092125;
+ --header-bg:#061719;--fg:#f5f7f7;--muted:#a8b8ba;--line:#183b41;--input-bg:#0c2a2e;--ok:#34d399;--bad:#f87171;--user-bg:#135862}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;background:var(--bg);color:var(--fg);overflow:hidden;
+ font:16px/1.75 "IBM Plex Sans Arabic","Cairo",system-ui,"Segoe UI",sans-serif}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+
+/* الهيدر */
+.hdr{flex:none;background:color-mix(in srgb,var(--header-bg) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
+ padding:max(10px,env(safe-area-inset-top)) 16px 10px;z-index:5}
+.hdr .in{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.25rem;color:var(--brand);text-decoration:none}
+.lg{position:relative;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand);overflow:hidden}
+.lg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:var(--brand-soft)}
+.tag{font-size:.75rem;font-weight:700;color:var(--brand);background:var(--brand-soft);padding:3px 10px;border-radius:99px;border:1px solid color-mix(in srgb,var(--brand) 25%,transparent)}
+.sp{margin-inline-start:auto;display:flex;align-items:center;gap:6px}
+.pill{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted);padding:4px 11px;border-radius:99px;border:1px solid var(--line)}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.pill.on i{background:var(--ok);animation:ping 2s infinite}.pill.bad i{background:var(--bad)}
+.ib{width:38px;height:38px;display:grid;place-items:center;border-radius:var(--btn-radius);border:1px solid var(--line);background:transparent;color:var(--fg);transition:.2s}
+.ib:hover{background:var(--brand-soft);color:var(--brand)}
+.sun{display:none}.dark .sun{display:block}.dark .moon{display:none}
+
+input,textarea{font:inherit;color:var(--fg);background:var(--input-bg);border:1px solid var(--line);border-radius:var(--btn-radius);padding:9px 12px;width:100%}
+input[dir=ltr]{text-align:left}
+
+/* المحادثة */
+.log{flex:1;min-height:0;overflow-y:auto;scroll-behavior:smooth;padding:18px 16px 20px}
+.log>*{max-width:860px;margin-inline:auto}
+.log>.row{margin-bottom:14px}
+.hero{position:relative;overflow:hidden;border-radius:28px;border:1px solid rgb(255 255 255/.1);color:#fff;text-align:center;padding:30px 20px 26px;
+ background:linear-gradient(135deg,#09272b 0%,#0e4750 55%,#061719 100%);box-shadow:0 24px 60px rgb(0 0 0/.25);animation:rise .7s both}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none}
+.hero::before{width:320px;height:320px;background:#f2af2d33;top:-110px;left:-90px}
+.hero::after{width:380px;height:380px;background:#13586270;bottom:-150px;right:-90px}
+.hero>*{position:relative;z-index:1}
+.badge{display:inline-flex;gap:6px;align-items:center;font-size:.75rem;font-weight:800;color:#f5bf55;background:#f2af2d26;border:1px solid #f2af2d66;padding:4px 14px;border-radius:99px}
+.slot{display:grid;place-items:center;margin:14px 0 4px;position:relative}
+.slot::before{content:"";position:absolute;width:190px;height:190px;border-radius:50%;border:1px dashed #f2af2d55;animation:spin 30s linear infinite}
+.slot::after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:radial-gradient(#f2af2d30,transparent 70%)}
+.slot .robot{z-index:1}
+.hero h1{margin:6px 0 6px;font-size:clamp(1.5rem,4.4vw,2.2rem);font-weight:800;line-height:1.35;color:#fff}
+.hero p{margin:0 auto 16px;max-width:520px;color:#ffffffd9}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip{font-size:.9rem;font-weight:600;color:#fff;background:#ffffff14;border:1px solid #ffffff40;padding:8px 15px;border-radius:99px;transition:.2s}
+.chip:hover{background:#f2af2d;color:#061719;border-color:#f2af2d;transform:translateY(-2px)}
+.chip.t{border-style:dashed}
+.trust{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:center;margin-top:18px;font-size:.78rem;font-weight:600;color:#ffffffbf}
+.trust span:before{content:"✦";color:#f2af2d;margin-inline-end:6px}
+
+.row{display:flex;gap:10px;align-items:flex-end;animation:pop .4s cubic-bezier(.2,.8,.2,1) both}
+.row.me{justify-content:flex-start}.row.bot{flex-direction:row-reverse;justify-content:flex-start}
+.bubble{max-width:min(84%,620px);padding:11px 17px;border-radius:var(--radius);word-break:break-word}
+.me .bubble{background:var(--user-bg);color:var(--user-fg);border-end-end-radius:5px;white-space:pre-wrap}
+.bot .bubble{background:var(--surface);border:1px solid var(--line);border-end-start-radius:5px;box-shadow:var(--shadow)}
+.bubble p{margin:0 0 6px}.bubble p:last-child{margin:0}.bubble ul{margin:4px 0 6px;padding-inline-start:20px}
+.bubble.err{color:var(--bad);border-color:var(--bad);white-space:pre-wrap}
+.meta{display:flex;gap:12px;margin-top:8px;padding-top:6px;border-top:1px dashed var(--line);font-size:.74rem;color:var(--muted)}
+.meta button{border:0;background:none;color:var(--muted);padding:0;font-size:.74rem}.meta button:hover{color:var(--brand)}
+.tcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 18px;box-shadow:var(--shadow);display:grid;gap:2px}
+.tcard b{color:var(--brand);font-weight:800}.tcard span{color:var(--muted);font-size:.88rem;animation:fade .5s}
+
+/* الكتابة + الروبوت المرافق */
+.cw{position:relative;flex:none;max-width:860px;width:100%;margin:0 auto;padding:0 16px max(12px,env(safe-area-inset-bottom));z-index:3}
+.send{flex:none;width:46px;height:46px;border-radius:var(--btn-radius);border:1px solid var(--btn-border);background:var(--btn-bg);color:var(--btn-fg);display:grid;place-items:center;transition:.2s}
+.send:hover{background:var(--btn-hover);transform:translateY(-2px)}.send:active{transform:scale(.94)}.send:disabled{opacity:.5;cursor:wait;transform:none}
+.send svg{transform:scaleX(-1)}
+.foot{margin:6px 0 0;text-align:center;font-size:.72rem;color:var(--muted)}
+.mirror{position:fixed;left:-9999px;top:0;visibility:hidden;white-space:pre-wrap;overflow-wrap:anywhere;box-sizing:border-box}
+
+/* الروبوت */
+.robot{--s:100px;position:relative;width:var(--s);flex:none}
+.robot svg{display:block;width:100%;height:auto;overflow:visible;animation:bob 3.6s ease-in-out infinite}
+.robot.big{--s:150px}
+.robot .hd{fill:#135862}.robot .bd,.robot .arm{fill:#0e4750}.robot .ear{fill:#f2af2d}
+.robot .scr{fill:#061719}.robot .ew{fill:#eafcff}.robot .pp>circle:first-child{fill:#061719}.robot .pp>circle+circle{fill:#fff}
+.robot .ch{fill:#f2af2d;opacity:.5}.robot .antl{stroke:#135862;stroke-width:3;stroke-linecap:round}
+.robot .bulb{fill:var(--accent);filter:drop-shadow(0 0 5px var(--accent));animation:glow 2.4s ease-in-out infinite}
+.robot .chest{fill:var(--accent);animation:glow 2.4s ease-in-out infinite}
+.robot .gears circle{fill:none;stroke:#f2af2d;stroke-width:4;stroke-dasharray:3.2 2.4;transform-box:fill-box;transform-origin:center;animation:spin 3s linear infinite}
+.robot .gears circle+circle{animation-direction:reverse}.robot .gears{opacity:0;transition:opacity .3s}
+.robot .eye{transform-box:fill-box;transform-origin:center;animation:blink 5.5s infinite}
+.robot .pp{transform:translate(calc(var(--lx,0)*4.5px),calc(var(--ly,0)*4px));transition:transform .15s ease-out}
+.robot .head{transform-origin:60px 100px;transition:transform .25s}
+.robot .m{opacity:0;fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;transition:opacity .2s}
+.robot .mo{fill:var(--accent);stroke:none}.robot .sm{opacity:1}
+.robot .armr{transform-origin:92px 106px}
+.thought{display:none;position:absolute;top:-8px;inset-inline-end:-18px;gap:4px;padding:7px 11px;border-radius:99px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);z-index:2}
+.thought i{width:6px;height:6px;border-radius:50%;background:var(--brand);animation:dot 1.2s infinite}
+.thought i:nth-child(2){animation-delay:.15s}.thought i:nth-child(3){animation-delay:.3s}
+.robot.mini{--s:38px}.mini .gears,.mini .thought{display:none}.mini svg{animation:none}
+/* حالات */
+.thinking .thought{display:flex}.thinking .gears{opacity:1}.thinking svg{animation-duration:1.5s}
+.thinking .pp{animation:look 2.6s ease-in-out infinite}.thinking .head{animation:tilt 2.6s ease-in-out infinite}
+.thinking .sm,.typing .sm,.happy .sm,.oops .sm{opacity:0}.thinking .mt{opacity:1}.typing .mo{opacity:1}.happy .mh{opacity:1}.oops .ms{opacity:1}
+.typing .head{transform:translateY(3px)}.typing .bulb{animation-duration:.5s}
+.tick .head{animation:hop .16s ease-out}
+.happy .armr{animation:wave .45s ease-in-out 4}
+.oops svg{animation:shake .5s}.oops .bulb{fill:var(--bad);filter:drop-shadow(0 0 5px var(--bad))}
+
+@keyframes bob{50%{transform:translateY(-5px)}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95.5%{transform:scaleY(.08)}}
+@keyframes glow{50%{opacity:.45}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes look{0%,100%{transform:translate(3px,-4px)}33%{transform:translate(-4px,-5px)}66%{transform:translate(1px,-1px)}}
+@keyframes tilt{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+@keyframes hop{50%{transform:translateY(-4px)}}
+@keyframes wave{50%{transform:rotate(-40deg)}}
+@keyframes shake{20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+@keyframes dot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+@keyframes ping{0%{box-shadow:0 0 0 0 var(--ok)}70%,100%{box-shadow:0 0 0 7px transparent}}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}}
+@keyframes fade{from{opacity:0}}
+@media (max-width:640px){
+.tag,.pill span{display:none}.bubble{max-width:90%}
+ .robot.big{--s:116px}.slot::before{width:150px;height:150px}.slot::after{width:120px;height:120px}
+
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* === تحسين الموبايل: واجهة مضغوطة === */
+@media (max-width:640px){
+ html,body{height:100dvh}
+ .hdr{padding:max(8px,env(safe-area-inset-top)) 12px 8px}
+ .hdr .in{gap:8px}.sp{gap:4px}
+ .logo{font-size:1.05rem;gap:8px}.lg{width:30px;height:30px;border-radius:8px}.lg svg{width:18px;height:18px}
+ .ib{width:34px;height:34px}.ib svg{width:16px;height:16px}.pill{padding:4px 8px}
+
+ .log{padding:12px 12px 10px}
+ .hero{border-radius:20px;padding:16px 14px}
+ .hero::before{width:200px;height:200px;filter:blur(40px)}.hero::after{width:220px;height:220px;filter:blur(40px)}
+ .badge{font-size:.68rem;padding:2px 10px}
+ .slot{margin:8px 0 0}.slot::before{width:104px;height:104px;animation:none}.slot::after{width:88px;height:88px}
+ .robot.big{--s:76px}
+ .hero h1{font-size:1.15rem;margin:4px 0;line-height:1.4}
+ .hero p{font-size:.84rem;line-height:1.6;margin-bottom:12px}
+ .chips{gap:6px}.chip{font-size:.78rem;padding:6px 11px}.chip.t,.trust{display:none}
+ .row{gap:6px}.log>.row{margin-bottom:10px}
+ .bubble{font-size:.92rem;line-height:1.65;padding:8px 13px;max-width:88%}
+ .robot.mini{--s:28px}.row .robot.thinking{--s:52px!important}
+ .tcard{padding:8px 13px}.tcard span{font-size:.8rem}
+ .meta{font-size:.7rem}
+ .cw{padding:0 10px max(8px,env(safe-area-inset-bottom))}
+ .composer{border-radius:18px;padding:5px;gap:6px}
+ .composer textarea{padding:7px 8px;max-height:96px;line-height:1.6}
+ .send{width:38px;height:38px;border-radius:11px}.send svg{width:18px;height:18px}
+ .foot{display:none}
+}
+@media (max-height:520px){.slot,.trust{display:none}.hero{padding:12px}}
+</style>
+</head>
+<body>
+<header class="hdr"><div class="in">
+  <a class="logo" href="#"><span class="lg"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2.5 9 2.5 12 0v-5"/></svg><img src="https://cdn-icons-png.flaticon.com/512/13972/13972594.png" alt="" referrerpolicy="no-referrer" onerror="this.remove()"></span>نابغ</a>
+  <span class="tag">المساعد الذكي</span>
+  <div class="sp">
+    <span id="pill" class="pill"><i></i><span>لم يتم الاتصال</span></span>
+    <button class="ib" id="theme" type="button" aria-label="تبديل الوضع الداكن"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+    <button class="ib" id="clear" type="button" aria-label="مسح المحادثة"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>
+  </div>
+</div></header>
+
+<main class="log" id="log" aria-live="polite">
+  <section class="hero" id="welcome">
+    <span class="badge">✦ Nabigh AI</span>
+    <div class="slot" id="slot"></div>
+    <h1>اسأل نبيغ… هجاوبك بسهولة وببساطة </h1>
+    <p>مساعدك الذكي مدرب على بيانات من الواقع للحصول على اجابة صحيحة.</p>
+    <div class="chips">
+      <button class="chip" type="button">ايه هو الذكاء الإصطناعى ؟</button>
+      <button class="chip" type="button">امتى ظهر مصطلح الذكاء الاصطناعي؟</button>
+      <button class="chip" type="button">ايه الفرق بين التمثيل الضوئي والتنفس الخلوي؟</button>
+      <button class="chip t" type="button">ايه عاصمة فرنسا؟</button>
+    </div>
+    <div class="trust"><span>اجابة صحيحة و من المحتوي المسجل لدي</span><span>بدون معلومات غير موثقة</span><span>بالعامية والفصحى</span></div>
+  </section>
+</main>
+
+<div class="cw" id="wrap">
+    <form class="composer" id="f">
+    <textarea id="q" rows="1" placeholder="اكتب سؤالك هنا..." aria-label="سؤالك" required></textarea>
+    <button class="send" id="b" type="submit" aria-label="إرسال"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></button>
+  </form>
+  <p class="foot">تطوير أحمد محمد.</p>
+</div>
+
+<script>
+const ROBOT=`<div class="robot"><div class="thought"><i></i><i></i><i></i></div><svg viewBox="0 0 120 132" aria-hidden="true">
+<g class="gears"><circle cx="20" cy="18" r="7"/><circle cx="101" cy="12" r="5"/></g>
+<g class="head"><line class="antl" x1="60" y1="19" x2="60" y2="9"/><circle class="bulb" cx="60" cy="6" r="5"/>
+<rect class="ear" x="6" y="48" width="10" height="24" rx="5"/><rect class="ear" x="104" y="48" width="10" height="24" rx="5"/>
+<rect class="hd" x="14" y="18" width="92" height="78" rx="28"/><rect class="scr" x="24" y="30" width="72" height="50" rx="20"/>
+<g class="eye"><ellipse class="ew" cx="46" cy="53" rx="11" ry="12"/><g class="pp"><circle cx="46" cy="53" r="5.8"/><circle cx="43.6" cy="50" r="1.9"/></g></g>
+<g class="eye"><ellipse class="ew" cx="74" cy="53" rx="11" ry="12"/><g class="pp"><circle cx="74" cy="53" r="5.8"/><circle cx="71.6" cy="50" r="1.9"/></g></g>
+<circle class="ch" cx="32" cy="68" r="4"/><circle class="ch" cx="88" cy="68" r="4"/>
+<path class="m sm" d="M52 69 Q60 76 68 69"/><path class="m mt" d="M53 71 q3.5 -3 7 0 t7 0"/><ellipse class="m mo" cx="60" cy="71" rx="4.5" ry="3.4"/>
+<path class="m mh" d="M49 67 Q60 82 71 67"/><path class="m ms" d="M52 75 Q60 67 68 75"/></g>
+<rect class="bd" x="36" y="100" width="48" height="26" rx="12"/><circle class="chest" cx="60" cy="113" r="4.5"/>
+<rect class="arm" x="22" y="104" width="12" height="18" rx="6"/><g class="armr"><rect class="arm" x="86" y="104" width="12" height="18" rx="6"/></g></svg></div>`;
+/* ============================================================
+   ✏️ الإعدادات — اكتب هنا فقط
+   ============================================================ */
+const CONFIG={
+  WEBHOOK_URL:'',   // رابط الـ Webhook (Production URL)
+  API_KEY:'',       // كلمة سر الـ Header (X-API-Key)
+  STUDENT_ID:'test-1' // رقم الطالب التجريبي
+};
+/* ============================================================ */
+const $=id=>document.getElementById(id),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const log=$('log'),q=$('q'),wrap=$('wrap'),pill=$('pill');
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+let busy=false,idleT;
+
+function mk(cls,size){const d=document.createElement('div');d.innerHTML=ROBOT;const r=d.firstChild;if(cls)r.classList.add(...cls.split(' '));if(size)r.style.setProperty('--s',size+'px');return r}
+const st=(el,c)=>{['thinking','typing','happy','oops'].forEach(x=>el.classList.remove(x));if(c)el.classList.add(c)};
+const look=(el,x,y)=>{el.style.setProperty('--lx',x);el.style.setProperty('--ly',y)};
+const hop=el=>{el.classList.remove('tick');void el.offsetWidth;el.classList.add('tick')};
+const heroEl=mk('big');$('slot').appendChild(heroEl);
+
+/* الثيم: نفس مفتاح التخزين المستخدم في المنصة */
+try{const s=localStorage.getItem('theme');document.documentElement.classList.toggle('dark',s?s==='dark':matchMedia('(prefers-color-scheme: dark)').matches);}catch(e){}
+$('theme').onclick=()=>{const d=document.documentElement.classList.toggle('dark');try{localStorage.setItem('theme',d?'dark':'light')}catch(e){}};
+
+/* العيون تتابع المؤشر */
+let raf=0;
+addEventListener('pointermove',e=>{if(raf)return;raf=requestAnimationFrame(()=>{raf=0;
+ document.querySelectorAll('.robot:not(.mini):not(.thinking):not(.typing)').forEach(r=>{const b=r.getBoundingClientRect();
+  look(r,clamp((e.clientX-b.left-b.width/2)/220,-1,1),clamp((e.clientY-b.top-b.height/2)/220,-1,1))})})});
+
+/* الروبوت يتحرك فوق النص ويبص على مكان المؤشر */
+const mir=document.createElement('div');mir.className='mirror';document.body.appendChild(mir);
+function caretX(){const c=getComputedStyle(q);
+ Object.assign(mir.style,{fontFamily:c.fontFamily,fontSize:c.fontSize,fontWeight:c.fontWeight,letterSpacing:c.letterSpacing,lineHeight:c.lineHeight,padding:c.padding,width:q.clientWidth+'px',direction:c.direction});
+ mir.textContent=q.value.slice(0,q.selectionStart);const s=document.createElement('span');s.textContent='\u200b';mir.appendChild(s);
+ return q.getBoundingClientRect().left+(s.getBoundingClientRect().left-mir.getBoundingClientRect().left)-q.scrollLeft}
+function track(){if(!heroEl.isConnected)return;const p=caretX(),b=heroEl.getBoundingClientRect();look(heroEl,clamp((p-b.left-b.width/2)/260,-1,1),.9)}
+function fit(){q.style.height='auto';q.style.height=Math.min(q.scrollHeight,140)+'px'}
+q.addEventListener('input',()=>{fit();if(!heroEl.isConnected)return;st(heroEl,q.value.length>=90?'happy':'typing');hop(heroEl);track();clearTimeout(idleT);idleT=setTimeout(()=>st(heroEl),1300)});
+['click','keyup','focus'].forEach(ev=>q.addEventListener(ev,track));
+q.addEventListener('blur',()=>st(heroEl));
+addEventListener('resize',track);
+q.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('f').requestSubmit()}});
+requestAnimationFrame(track);
+
+/* عرض الرسائل */
+const AVT=()=>mk('mini');
+function md(s){s=String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+ let o='',l=false;for(const t of s.split('\n')){const m=t.match(/^\s*(?:[-*•]|\d+[.)])\s+(.*)/);
+  if(m){if(!l){o+='<ul>';l=true}o+='<li>'+m[1]+'</li>'}else{if(l){o+='</ul>';l=false}if(t.trim())o+='<p>'+t+'</p>'}}
+ return o+(l?'</ul>':'')}
+const toEnd=()=>{log.scrollTop=log.scrollHeight};
+function addUser(t){const r=document.createElement('div');r.className='row me';const b=document.createElement('div');b.className='bubble';b.textContent=t;r.appendChild(b);log.appendChild(r);toEnd()}
+function addBot(html,err){const r=document.createElement('div');r.className='row bot';r.appendChild(AVT());const b=document.createElement('div');b.className='bubble'+(err?' err':'');
+ if(err)b.textContent=html;else b.innerHTML=html;r.appendChild(b);log.appendChild(r);toEnd();return b}
+function reveal(b,t){return new Promise(ok=>{if(reduce||t.length>1500){b.innerHTML=md(t);return ok()}
+ const w=t.split(/(\s+)/);let i=0;const iv=setInterval(()=>{i+=4;b.innerHTML=md(w.slice(0,i).join(''));toEnd();if(i>=w.length){clearInterval(iv);b.innerHTML=md(t);ok()}},30)})}
+function meta(b,secs,text){const m=document.createElement('div');m.className='meta';m.innerHTML='<span>'+secs+'</span>';
+ const c=document.createElement('button');c.type='button';c.textContent='نسخ';c.onclick=()=>{navigator.clipboard?.writeText(text);c.textContent='تم النسخ';setTimeout(()=>c.textContent='نسخ',1500)};m.appendChild(c);b.appendChild(m)}
+function thinkRow(){const r=document.createElement('div');r.className='row bot';r.appendChild(mk('thinking',92));
+ const c=document.createElement('div');c.className='tcard';c.innerHTML='<b>بفكر في سؤالك…</b><span></span>';r.appendChild(c);log.appendChild(r);toEnd();
+ const msg=['ببحث في المراجع…',' بتأكد من صحة الإجابة…','بربط المعلومات ببعض…','بجهّز لك إجابة بسيطة…'];let i=0;const sp=c.querySelector('span');sp.textContent=msg[0];
+ const t=setInterval(()=>{i=(i+1)%msg.length;sp.textContent=msg[i];sp.style.animation='none';void sp.offsetWidth;sp.style.animation=''},1900);r.stop=()=>clearInterval(t);return r}
+const setPill=(k,t)=>{pill.className='pill '+k;pill.querySelector('span').textContent=t};
+
+async function send(text){
+ if(busy)return;const url=CONFIG.WEBHOOK_URL.trim(),key=CONFIG.API_KEY.trim();
+ if(!url||!key){document.body.classList.add('chat');addBot('اكتب رابط الـ Webhook وكلمة السر في CONFIG جوه الكود الأول.',true);return}
+ busy=true;$('b').disabled=true;$('welcome')?.remove();document.body.classList.add('chat');addUser(text);
+ const tr=thinkRow(),t0=performance.now();let mood='happy';
+ try{
+  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','X-API-Key':key},body:JSON.stringify({question:text,student_id:CONFIG.STUDENT_ID||'test-1'})});
+  const secs=((performance.now()-t0)/1000).toFixed(1)+' ثانية',raw=await r.text();let d=null;try{d=JSON.parse(raw)}catch(e){}
+  tr.stop();tr.remove();
+  if(!r.ok){mood='oops';setPill('bad','خطأ');
+   const h={401:'كلمة السر غلط.',403:'كلمة السر غلط.',404:'الرابط غلط، أو الـ workflow مش منشور (Publish)، أو ده رابط الـ test.',415:'ده رابط فورم رفع الكتاب مش رابط الشات.',500:'في error جوه الـ workflow. افتح Executions في n8n وشوف أنهي node وقف.'};
+   addBot('فشل الطلب ('+r.status+'). '+(h[r.status]||'')+'\n'+raw.slice(0,250),true)}
+  else{if(Array.isArray(d))d=d[0];const ans=(d&&(d.output||d.answer))||raw;setPill('on','متصل');
+   const b=addBot('');await reveal(b,ans);meta(b,secs,ans);toEnd()}
+ }catch(e){tr.stop();tr.remove();mood='oops';setPill('bad','غير متصل');
+  addBot('الطلب ماوصلش للـ n8n.\nغالباً السبب CORS: افتح Webhook node ← Options ← Allowed Origins (CORS) واكتب * ثم انشر الـ workflow تاني.\nأو الرابط نفسه غلط.',true)}
+ busy=false;$('b').disabled=false;q.focus();track()}
+
+$('f').addEventListener('submit',e=>{e.preventDefault();const t=q.value.trim();if(!t)return;q.value='';fit();track();send(t)});
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>send(c.textContent));
+$('clear').onclick=()=>{if(busy)return;log.innerHTML='';const h=document.createElement('section');h.className='hero';h.id='welcome';
+ h.innerHTML='<h1>تم مسح المحادثة</h1><p>اكتب سؤالًا جديدًا وأنا جاهز.</p>';log.appendChild(h)};
+</script>
+</body>
+</html>
